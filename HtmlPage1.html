@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-3.7.0.intellisense.js"></script>
+    <title>Jquery Webpage</title>
+</head>
+<body>
+    <h1> Welcome to the Lock Game!🏹</h1>
+    <div id="start">Start Game</div>
+    <br />
+    <div id="output">
+        <small>Message</small>
+        <input type="number" min="0" max="9" name="lock1" />
+        <input type="number" min="0" max="9" name="lock2" />
+        <input type="number" min="0" max="9" name="lock3" />
+        <br /><br />
+        <div class="btn" id="checklock">Open Lock &#x1F512; </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#output').hide();
+            $('#start').click(startgame);
+            $('#checklock').click(openlock);
+
+            function openlock() {
+                //getting number entered in the number textbox
+                var win = 0;
+                for (x = 0; x < $('input[type="number"]').length; x++) {
+                    var guessnumber = $('input[type="number"]').eq(x);
+                    //comparing the numbers individually.
+                    var result = checknumber(guessnumber.val(), secretnum[x]);
+                    guessnumber.css({ backgroundColor: result.backgrd })
+                    //whichever satisfies the correct number. it increments a number.
+                    if (result.checker) {
+                        win++;  
+                    }
+                }
+                //checking the input number with secret number
+                if (win == 3) {
+                    $('#start').show();
+                    $('small').html('You got it <br> ' + secretnum);
+                }
+            }
+
+            //checking the number & changing the background color of the textbox accordingly.
+            function checknumber(a, b) {
+                var response = {};
+
+                if (a < b) {
+                    response.checker = false; response.backgrd = 'red';
+                }
+                if (a > b) {
+                    response.checker = false; response.backgrd = 'blue';
+                }
+                if (a == b) {
+                    response.checker = true; response.backgrd = 'green';
+                }
+
+                return response;
+            }
+
+            var secretnum = '';
+            function startgame()
+            {
+                //To create a automatic secret number.
+                secretnum = Math.floor(Math.random() * (1000)).toString();
+                console.log(secretnum);
+                $('#start').hide();
+                $('#output').show();
+                //setting defaulty to value 5.
+                for (x = 0; x < $('input[type="number"]').length; x++) {
+                    $('input[type="number"]').eq(x).val('5');
+                }
+                $('small').html("Red background requires higher value. <br> Blue background requires Lower value.  ")
+            }
+            $('input[type="number"]').css({
+                color: 'black', fontSize: '3em', width: '60px', border: '2px solid black',
+                backgroundColor: 'yellow', textalign: 'center', padding: '16px'
+            })
+            $('.btn').css({
+                backgroundColor: 'green', color: 'white', width: '250px', fontSize: '1.5em',
+                padding: '25px', border: '1px solid black', textAlign: 'center'
+            })
+            $('#output').css({
+                backgroundColor: '#8E8C8C', width: '300px', padding: '15px',
+                border: '1px solid white', textAlign: 'center'
+            })
+            $('small').css({
+                color: 'white', fontSize: '1em', padding: '15px',
+                display: 'block', textAlign: 'center'
+            })
+            $('#start').css({
+                width: '250px', color: 'white', padding: '15px', fontSize: '1em',
+                textAlign:'center', backgroundColor: 'green', border: '1px solid black'  
+            })
+        })
+    </script>
+</body>
+</html>
